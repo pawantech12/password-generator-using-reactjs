@@ -6,14 +6,14 @@ import { FaRegCopy } from "react-icons/fa";
 const PasswordHistory = () => {
   const location = useLocation();
   const { history } = location.state || { history: [] };
-  const [copyStatus, setCopyStatus] = useState("");
+  const [copiedIndex, setCopiedIndex] = useState(null); // Track the copied index
 
-  const copyToClipboard = (pwd) => {
+  const copyToClipboard = (pwd, index) => {
     navigator.clipboard.writeText(pwd);
-    setCopyStatus("Copied!");
+    setCopiedIndex(index); // Set the copied index
     setTimeout(() => {
-      setCopyStatus("");
-    }, 2000); // Reset the message after 2 seconds
+      setCopiedIndex(null); // Reset the message after 2 seconds
+    }, 2000);
   };
 
   return (
@@ -25,22 +25,22 @@ const PasswordHistory = () => {
         {history?.length === 0 ? (
           <p className="text-gray-300">No password history available.</p>
         ) : (
-          <ul>
+          <ul className="h-[400px] overflow-y-auto px-4">
             {history?.map((pwd, index) => (
               <li
                 key={index}
                 className="bg-custom-light-blue text-gray-300 p-4 rounded-lg mb-2 flex items-center justify-between transition-transform transform hover:scale-105 relative"
               >
-                <span>{pwd}</span>
+                <span className="overflow-x-auto w-full">{pwd}</span>
                 <button
-                  onClick={() => copyToClipboard(pwd)}
+                  onClick={() => copyToClipboard(pwd, index)} // Pass the index here
                   className="bg-custom-violet text-white p-2 rounded-md flex items-center transition-colors duration-200 hover:bg-opacity-80"
                 >
                   <FaRegCopy className="w-4 h-4 mr-1" />
                 </button>
-                {copyStatus && (
+                {copiedIndex === index && ( // Show tooltip only for the copied password
                   <div className="absolute bottom-12 -right-3 transform -translate-x-1/2 mb-2 bg-gray-700 text-white text-xs rounded p-1 w-fit text-center">
-                    {copyStatus}
+                    Copied!
                   </div>
                 )}
               </li>

@@ -16,3 +16,14 @@
    cursor: pointer;
    transition: background 0.3s ease;
  }
+
+ ::-webkit-scrollbar{
+   width: 6px;
+   background-color: #1C2141;
+   border-radius: 10px;
+ }
+
+ ::-webkit-scrollbar-thumb{
+   background-color: #5E69DC;
+   border-radius: 10px;
+ }
